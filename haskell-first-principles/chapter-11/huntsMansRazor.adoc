@@ -1,0 +1,17 @@
+= HuntsMansRazor
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+ePrinter :: Expr -> String
+ePrinter (Lit n)   = show n
+ePrinter (Add a b) = ePrinter a ++ " + " ++ ePrinter b
+
+---
+ePrinter (Add (Add (Lit 10) (Lit 20)) (Lit 40)) = ePrinter (Add (Lit 10) (Lit 20)) ++ " + " ++ ePrinter (Lit 40)
+                                                                                            --- ⬆ this hits out base case
+ePrinter (Add (Lit 10) (Lit 20)) = ePrinter (Lit 10) ++ " + " ++ ePrinter (Lit 20)
+
+-- "10 + 20 + 40"
+----

@@ -1,0 +1,35 @@
+= Morse Tests
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source, Haskell]
+-----
+(>>=) :: forall a b . Monad m => m a -> (a -> m b) -> m b
+-- bind operator
+
+charGen :: Gen Char
+charGen = elements allowedChars
+= ['a']
+
+charToMorse :: Char -> Maybe Morse
+charToMorse c = M.lookup c letterToMorse
+
+morseToChar :: Morse -> Maybe Char
+morseToChar m = M.lookup m morseToLetter
+
+prop_thereAndBackAgain :: Property
+prop_thereAndBackAgain =
+    forAll charGen
+    (\c -> ((charToMorse c)>>= morseToChar) == Just c)
+-----
+
+[source, Haskell]
+-----
+prop_thereAndBackAgain :: Property
+prop_thereAndBackAgain =
+    forAll 'a'
+    (\c -> (Just ".-")>>= morseToChar) == Just 'a')
+           ((Just 'a' == Just 'a')
+           True
+            
+-----

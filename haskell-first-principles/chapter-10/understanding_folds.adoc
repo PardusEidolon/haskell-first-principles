@@ -1,0 +1,138 @@
+= Understanding Folds
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+== Fold Right
+[source,Haskell]
+----
+foldr :: (a -> b -> b) -> b -> t a -> b
+foldr const 'a' [1..3]
+(1 `const` ( foldr const 'a' [2,3]))
+(1 `const` (2 `const` ( foldr const 'a' [3])))
+(1 `const` (2 `const`(3 `const`( foldr `const` 'a' []))))
+(1 `const` (2 `const` (3 `const` 'a')))
+(1 `const` (2 `const` 3))
+(1 `const` 2)
+
+<interactive>:5:18: error:
+    * No instance for (Num Char) arising from the literal `1'
+    * In the expression: 1
+      In the third argument of `foldr', namely `[1 .. 3]'
+      In the expression: foldr const 'a' [1 .. 3]
+----
+But why? it should just reduce to 1, 'a' should just be thrown away?
+Is it because the difference in type? the fact that const doesn't care about it's second argument but foldr wants to output its second argument?
+
+It's because it's trying to add a different type the list of numbers. It can't match a char with an Int in the same list.
+
+[source,Haskell]
+----
+const :: a -> b -> a
+foldr :: (a -> b -> b) -> b -> t a -> b
+foldr const 'a' [1..3]
+(1 `const` ( foldr const 'a' [2,3]))
+(1 `const` (2 `const` ( foldr const 'a' [3])))
+(1 `const` (2 `const`(3 `const`( foldr `const` 'a' []))))
+(1 `const` (2 `const` (3 `const` 'a')))
+----
+
+I have confirmed my suspicions it was with the type. because of how const works it only returns its first argument. foldr makes the function force its second argument but because const doesn't work like that we get a type error
+
+[source,Haskell]
+----
+foldr const 0 [1..3]
+(1 `const` ( foldr const 0 [2,3]))
+(1 `const` (2 `const` ( foldr const 0 [3])))
+(1 `const` (2 `const`(3 `const`( foldr `const` 0 []))))
+(1 `const` (2 `const` (3 `const` 0)))
+----
+
+[source,Haskell]
+----
+foldl f z (x:xs) = foldl f (f z x) xs
+lastbut1safe = fst . foldl (\(a,b) x -> (b,just x)) (Nothing,Nothing) [1,2,3]
+lastbut1safe = fst . foldl (\(a,b) x -> (b,just x)) (Nothing,Nothing) 1 : 2 : 3 : []
+
+[(Nothing,Nothing),(Nothing,Just 1),(Just 1,Just 2),(Just 2,Just 3)]
+----
+
+[source,Haskell]
+----
+myAny even [1..5] = 
+foldr (\a b -> even a || b ) False [1..5]
+
+even 1 || False ( foldr even [2] || False)
+even 2 || False(foldr even 0 || False
+(False(True))
+True
+----
+
+[source,Haskell]
+----
+This is fold left; it is left associated
+
+foldl (^) 2 [1..3]
+foldl = foldl f (f n x) xs
+(((2 ^ 1) ^ 2 )^ 3)
+((2 ^ 2 )^ 3)
+(4 ^ 3)
+64
+----
+
+== Exercises: Understanding Folds
+
+foldr (*) 1 [1..5] will return the same result as which of the following:
+
+- b and c
+
+Write out the evaluation steps for
+
+foldl (flip (*)) 1 [1..3]
+[source,Haskell]
+----
+Write out the evaluation steps for
+foldl (flip (*)) 1 [1..3]
+
+foldlFlip = (((* 1 1) * 2 1)* 3 2)
+----
+
+One difference between foldr and foldl is:
+foldr, but not foldl, associates to the right & foldr, but not foldl, always forces the rest of the fold
+
+Folds are catamorphisms, which means they are generally used
+to reduce structure
+
+[source,Haskell]
+----
+pab :: [String]
+pab = ["apple","monkey","book"]
+
+-- Write out the evaluation steps;
+
+foldpab :: [String] -> String
+foldpab ls = foldl (\b a -> take 3 a) "" ls
+
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\b a -> take 3 "apple") "" ["monkey","book"]
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\b a -> take 3 "monkey") "" ["book"]
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\b a -> take 3 "book") "" []
+*Foldfunc> "boo"
+----
+
+[source, Haskell]
+----
+foldpab :: [String] -> String
+foldpab ls = foldl (\a b -> take 3 a) "" ls
+
+-- so why does this return ""? write out the steps;
+
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\a b -> take 3 a) "" ["apple","monkey","book"]
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\a b -> take 3 "") "" ["monkey","book"]
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\a b -> take 3 "") "" ["book"]
+*Foldfunc> foldpab ["apple","monkey","book"] = foldl (\a b -> take 3 "") "" []
+*Foldfunc> ""
+
+-- The anonymous function here doesn't care about the second argument which is b so we are 
+-- always throwing it out and running the first argument "" on the function take
+-- so as a result the function is always going to come back with an empty string
+----
+

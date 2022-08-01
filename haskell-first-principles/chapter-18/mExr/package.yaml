@@ -1,0 +1,27 @@
+name:                mExr
+version:             0.1.0.0
+
+dependencies:
+- base >= 4.7 && < 5
+- checkers
+- QuickCheck
+- hspec
+
+library:
+  source-dirs: src
+
+tests:
+  mExr-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall 
+    - -fno-warn-orpahns
+    dependencies:
+    - mExr
+    - checkers
+    - QuickCheck
+    - hspec

@@ -1,0 +1,26 @@
+= As Pattern Breakdown
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,haskell]
+----
+isSubseqOf :: (Eq a) => [a] -> [a] -> Bool
+isSubseqOf [] _ = True
+isSubseqOf (h1:_) [] = False
+isSubseqOf l1@(h1:t1) (h2:t2) = if h1 == h2 then isSubseqOf t1 t2 else isSubseqOf l1 t2
+
+--- input values: "blah" "wooblah"
+isSubseqOf [] _ = True
+isSubseqOf (h1:_) [] = False
+isSubseqOf "blah"@('b':'l':'a':'h') ('w':'o':'o':'b':'l':'a':'h') = if 'b' == 'w' then isSubseqOf "lah" "ooblah" else isSubseqOf "blah" "ooblah"
+isSubseqOf "blah"@('b':'l':'a':'h') ('o':'b':'l':'a':'h') = if 'b' == 'o' then isSubseqOf "lah" "oblah" else isSubseqOf "blah" "oblah"
+isSubseqOf "blah"@('b':'l':'a':'h') ('b':'l':'a':'h') = if 'b' == 'b' then isSubseqOf "lah" "lah" else isSubseqOf "blah" "lah"
+isSubseqOf "lah"@('l':'a':'h') ('l':'a':'h') = if 'l' == 'l' then isSubseqOf "ah" "ah" else isSubseqOf "lah" "ah"
+isSubseqOf "ah"@('a':'h') ('a':'h') = if 'a' == 'a' then isSubseqOf "h" "h" else isSubseqOf "ah" "h"
+isSubseqOf "h"@('h':[]) ('h':[]) = if 'h' == 'h' then isSubseqOf [] [] else isSubseqOf "h" []
+True
+----
+
+[NOTE]
+The `@` symbol references whole values. As-patterns in Haskell are a nifty way to be able to pattern match on
+part of something and still refer to the entire original value.

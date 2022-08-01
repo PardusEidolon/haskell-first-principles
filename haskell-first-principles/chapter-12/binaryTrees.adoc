@@ -1,0 +1,41 @@
+= Binary Trees
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+== Let's make some trees!
+
+[source,Haskell]
+----
+unfoldTree :: (a -> Maybe (a,b,a)) -> a -> BinaryTree b
+unfoldTree f e = case f e of
+    Just (lt,l,rt) -> Node (unfoldTree f lt) l (unfoldTree f rt)
+    Nothing -> Leaf
+
+
+treeHelper :: Integer -> Integer -> Maybe (Integer,Integer ,Integer)
+treeHelper n i = if n >= i 
+                    then Just (i +1,i,i+1) 
+                else Nothing
+----
+
+[source,Haskell]
+----
+unfoldTree (treeHelper 3) 1 = case (treeHelper 3) 1 of
+    Just (2,1,2) -> Node (unfoldTree (treeHelper 3) 2) 1 (unfoldTree (treeHelper 3) 2)
+    Nothing -> Leaf
+
+--- for the left tree...same for the right tree also
+unfoldTree (treeHelper 3) 2 = case (treeHelper 3) 2 of
+    Just (3,2,3) -> Node (unfoldTree (treeHelper 3) 3) 2 (unfoldTree (treeHelper 3) 3)
+
+unfoldTree (treeHelper 3) 3 = case (treeHelper 3) 3 of
+    Nothing -> Leaf
+
+treeHelper 3 3 = if 3 > 3 
+                    then Just (3,2,3) 
+                else Nothing
+
+
+Node (Node Leaf 2 Leaf) 1 (Node Leaf 2 Leaf)
+----
+

@@ -1,0 +1,49 @@
+= smartCons
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source, Haskell]
+----
+countTheBeforeVowel :: String -> Integer
+countTheBeforeVowel = go . words
+    where 
+        go (wa:wb:ws) = 
+            case notThe wa of
+                Just _  -> go (wb:ws)
+                Nothing -> 
+                    if vowelInitial wb
+                        then 1 + go (wb:ws)
+                        else go (wb:ws)
+        go _ = 0 
+
+vowelInitial :: String -> Bool
+vowelInitial [] = False
+vowelInitial (x:_) = isVowel x
+
+isVowel :: Char -> Bool
+isVowel c = c `elem` vowels
+----
+
+_⬆ for reference ⬆_
+
+[source, Haskell]
+----
+countTheBeforeVowel :: String -> Integer
+countTheBeforeVowel = go . words "the evil cow"
+    where 
+        go ("the":"evil":"cow") = 
+            case notThe "the" of
+                Just _  -> go ("evil":"cow")
+                Nothing -> 
+                    if vowelInitial "evil"
+                        then 1 + go ("evil":"cow")
+                        else go ("evil":"cow")
+        go _ = 0 
+
+vowelInitial :: String -> Bool
+vowelInitial [] = False
+vowelInitial ('e':_) = isVowel 'e'
+
+isVowel :: Char -> Bool
+isVowel 'e' = 'e' `elem` "aeiou"
+----

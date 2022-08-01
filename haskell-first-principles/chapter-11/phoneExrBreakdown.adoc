@@ -1,0 +1,39 @@
+= Phone Pattern Exercise Breakdown
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+Reference:
+[source,haskell]
+----
+data Button = Button Char String deriving Show
+newtype DaPhone = DaPhone [Button] deriving Show
+
+reverseTaps :: DaPhone -> Char -> [(Char, Int)]
+reverseTaps (DaPhone buttons) c =
+   if isUpper c
+       then ('*', 1) : taps buttons (toLower c)
+       else taps buttons c
+   where
+       taps bs c = [buttonTaps (button bs c) c]
+       buttonTaps (Button d cs) c = (d, maybe (error "boom") succ $ c `elemIndex` cs)
+       button bs c = head $ dropWhile (not . includes c) $ bs
+       includes c (Button _ cs) = c `elem` cs
+----
+
+[source,haskell]
+----
+reverseTaps (DaPhone [Button '2' "abc2"]) 'A' =
+   if isUpper 'A'
+    then ('*', 1) : taps [Button '2' "abc2"] (toLower 'A')
+   else taps buttons 'A'
+
+    where
+        taps [Button '2' "abc2"] 'a' = [buttonTaps (button [Button '2' "abc2"] 'a') 'a']
+                                        
+        buttonTaps (Button '2' "abc2") 'a' = ('2', maybe (error "boom") succ $ 'a' `elemIndex` "abc2")
+                                             
+        button [Button '2' "abc2"] 'a' = head $ dropWhile (not . includes 'a') $ [Button '2' "abc2"]
+                                        
+        includes 'a' (Button _ cs) = 'a' `elem` "abc2"
+                                    
+----

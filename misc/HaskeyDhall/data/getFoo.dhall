@@ -1,0 +1,1 @@
+\(r : { foos : Bool , bazy : Text}) -> r.foos

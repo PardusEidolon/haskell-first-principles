@@ -1,0 +1,62 @@
+= smartCons
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+== Well, It's only Natural
+
+[source,Haskell]
+----
+natToInteger :: Nat -> Integer 
+natToInteger Zero = 0
+natToInteger (Succ n) = natToInteger n + 1
+
+foo :: Nat
+foo = Succ $ Succ $ Succ $ Succ Zero
+----
+
+[source,Haskell]
+----
+natToInteger (Succ (Succ (Succ Zero))) = natToInteger (Succ (Succ Zero)) + 1
+natToInteger (Succ (Succ Zero))        = natToInteger (Succ Zero) + 1 + 1
+natToInteger (Succ Zero) = natToInteger Zero + 1 + 1 + 1
+natToInteger Zero = 0 + 1 + 1 + 1
+natToInteger = 3
+----
+
+
+== Take a Natural into an Integer
+
+[source,Haskell]
+----
+integerToNat :: Integer -> Maybe Nat
+integerToNat n 
+    | n == 0 = Just Zero
+    | n  > 0 = Just . Succ . fromJust . integerToNat $ n - 1
+    | otherwise = Nothing 
+----
+
+[source,Haskell]
+----
+integerToNat :: Integer -> Maybe Nat
+integerToNat 3
+---    | n == 0 = Just Zero
+       | 3  > 0 = Just . Succ . fromJust . integerToNat $ 3 - 1
+---    | otherwise = Nothing
+
+integerToNat 2
+       | 2  > 0 = Just . Succ . fromJust . integerToNat $ 2 - 1
+
+integerToNat 1
+       | 1  > 0 = Just . Succ . fromJust . integerToNat $ 1 - 1
+
+integerToNat 0
+       | n == 0 = Just Zero
+
+--- now recurse back up the tree
+
+Just (Succ Zero)
+
+Just (Succ (Succ Zero))
+
+Just (Succ (Succ (Succ Zero)))
+----

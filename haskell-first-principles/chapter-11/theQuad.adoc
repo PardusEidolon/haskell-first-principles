@@ -1,0 +1,107 @@
+= The Quad
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+:stem:
+
+== Overview
+Determine how many unique inhabitants each type has.
+Suggestion: do the arithmetic unless you want to verify.
+
+_P.S. Writing them out gets tedious quickly._
+
+=== Question Time!
+
+1. How many different forms can this take?
+
+[source, haskell]
+----
+data Quad = One | Two | Three | Four deriving (Eq, Show)
+
+-- 4 + 4
+eQuad :: Either Quad Quad
+eQuad = Left One
+eQuad = Left Two
+eQuad = Left Three
+eQuad = Left Four
+eQuad = Right One
+eQuad = Right Two
+eQuad = Right Three
+eQuad = Right Four
+----
+
+2. 
+
+[source, haskell]
+----
+prodQuad :: (Quad, Quad)
+prodQuad = ??? (1)
+----
+<1> Beacuse I cant be bothered writing it all out, the equation is 4 * 4 we can have  16 possible function implementations of this function with this type.
+
+3. 
+[source, haskell]
+----
+funcQuad :: Quad -> Quad
+funcQuad = ??? (1)
+----
+<1> Because we added an (->) exponential into the mix we take the equation listed below to formulate an answer.
+
+[asciimath]
+++++
+b ^ a
+++++
+Whitch is we take the ammopunt of type contructors of type b and exponent that by the type constructors of type a.
+
+4.
+[source, haskell]
+----
+prodTBool :: (Bool, Bool, Bool)
+prodTBool = (True,True,True)
+            (False,False,False)
+            (True,True,False)
+            (True,False,False)
+            (Flase,True,False)
+            (False,False,True)
+            (True,False,True)
+            (False,True,True) (1)
+----
+<1> see equation below:
+
+[asciimath]
+++++
+"2 * 2 * 2 = 8"
+++++
+
+5.
+[source, haskell]
+----
+gTwo :: Bool -> Bool -> Bool
+gTwo True True  = True
+gTwo True False = False
+gTwo False False = False
+gTwo False True = True (1)
+----
+<1> see equation below:
+
+[asciimath]
+++++
+2 ^ 2  ^ 2 = 16?
+++++
+
+6.
+[source, haskell]
+----
+fTwo :: Bool -> Quad -> Quad
+gTwo True One    = One
+gTwo True Two    = Two
+gTwo True Three  = Three
+gTwo True Four   = Four (1)
+----
+<1> aprrently there is `65536` possible implementations of this type, how?
+
+[asciimath]
+++++
+"4 ^ (4 * 2) = 65536"
+++++
+
+> _There are some things in this world that don't make sense, don't try to understand just do_

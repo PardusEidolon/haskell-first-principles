@@ -1,0 +1,56 @@
+= Maxi and Min Functions
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,haskell]
+----
+mymaxiBy :: (a -> a -> Ordering) -> [a] -> a
+mymaxiBy comp (x:xs) = go comp xs x
+    where go _ [] tail = tail
+          go comp (x:xs) tail = go comp xs (if comp tail x == GT then tail else x)
+----
+
+== ⬆⬆⬆ Reference ⬆⬆⬆
+== mymaxiBy
+[source,haskell]
+----
+mymaxiBy :: (a -> a -> Ordering) -> [a] -> a
+mymaxiBy compare 'b':'o':'g' = go compare "og" 'b'
+    where go _ [] tail = tail
+          go compare ('b':'o':'g') 'b' = go compare "og" (if compare 'b' 'b' == GT then 'b' else 'b')
+-- 
+mymaxiBy compare ('b':'o':'g') = go compare "og" 'b'
+    where go _ [] tail = tail
+          go compare ('o':'g') 'b' = go compare 'g':[] (if compare 'b' 'o' == GT then 'b' else 'o')
+-- 
+mymaxiBy compare ('b':'o':'g') = go compare ('g':[]) 'o'
+    where go _ [] tail = tail
+          go compare ('g':[]) 'o' = go compare [] (if compare 'o' 'g' == GT then 'o' else 'g')
+-- 
+mymaxiBy compare ('b':'o':'g') = go compare [] 'o'
+    where go _ [] 'o' = 'o'
+----
+
+== myminBy
+[source,haskell]
+----
+myminBy :: (a -> a -> Ordering) -> [a] -> a
+myminBy comp (x:xs) = go comp xs x
+    where go _ [] tail = tail
+          go comp (x:xs) tail = go comp xs (if comp tail x == LT then tail else x)
+----
+=== ⬆⬆⬆ Reference ⬆⬆⬆
+[source,haskell]
+----
+myminBy compare ('p':'u':'n') = go compare "un" 'p'
+    where go _ [] tail = tail
+          go compare "un" 'p' = go compare ('n':[]) (if compare 'p' 'u' == LT then 'p' else 'u')
+---
+myminBy compare ('p':'u':'n') = go compare ('n':[]) 'p'
+    where go _ [] tail = tail
+          go compare ('n':[]) 'p' = go compare [] (if compare 'p' 'n' == LT then 'p' else 'n')
+---
+myminBy compare ('p':'u':'n') = go compare [] 'n'
+    where go _ [] 'n' = 'n'
+----
+

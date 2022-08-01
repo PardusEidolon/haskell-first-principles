@@ -1,0 +1,91 @@
+= Hangman Docs
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+gameWords :: IO WordList
+gameWords = do
+  (WordList aw) <- allWords
+  return $ WordList (filter gameLength aw)
+  where gameLength w =
+          let l = length (w :: String)
+          in    l >= minWordLength
+             && l <  maxWordLength
+----
+
+_⬆⬆⬆ This is for reference ⬆⬆⬆_
+
+[source,Haskell]
+----
+gameWords :: IO WordList
+gameWords = do
+  (WordList ["String","Cow","Bluejay"...]) <- allWords
+  return $ WordList (filter gameLength ["String","Cow","Bluejay"])
+  where gameLength "String" =
+          let l = length "String"
+          in    7 >= 5
+             && 7 <  9
+----
+
+[source, Haskell]
+----
+gameWords :: IO WordList
+randomWord :: WordList -> IO String
+
+randomWord' :: IO String
+randomWord' = gameWords >>= randomWord
+
+-- :t (>>=) :: m a -> (a -> m b) -> m b
+IO WorList -> (WordList -> IO String) -> IO String
+----
+
+[source,Haskell]
+----
+instance Show Puzzle where
+  show (Puzzle _ discovered guessed) = (intersperse ' ' $ 
+                                        fmap renderPuzzleChar discovered)
+                                        ++ " guessed so far: " ++ guessed
+-- start here
+instance Show Puzzle where
+  show (Puzzle _ [Just 'h',Just 'i'] "ai") = (intersperse ' ' $ 
+                                        fmap renderPuzzleChar [Nothing,Just 'i'])
+                                        ++ " guessed so far: " ++ "ai"
+----
+
+[source,Haskell]
+----
+fillInCharacter :: Puzzle -> Char -> Puzzle
+fillInCharacter (Puzzle word filledInSoFar s) c = 
+    Puzzle word newFilledInSoFar (c:s)
+        where zipper guessed wordChar guessChar =
+                if wordChar == guessed
+                    then Just wordChar
+                    else guessChar
+              newFilledInSoFar =
+                  zipWith (zipper c) word filledInSoFar
+-- =====================================================
+fillInCharacter :: Puzzle -> Char -> Puzzle
+fillInCharacter (Puzzle ["hi"] [Nothing,Just 'i'] "ai") 'h' = 
+    Puzzle "hi" newFilledInSoFar ('h':'a':'i':[])
+        where zipper 'h' 'h' Nothing =
+                if 'h' == 'h'
+                    then Just 'h'
+                    else Nothing
+              newFilledInSoFar =
+                  zipWith (zipper 'h') "hi" [Nothing,Just 'i']
+
+Puzzle "hi" [Just 'h',Just 'i'] "hai"
+----
+
+== List Difference
+[source,Haskell]
+----
+wrongGuesses :: Puzzle -> Int
+wrongGuesses (Puzzle _ filledInSoFar guessed) =
+  length $ guessed \\ catMaybes filledInSoFar
+-- =========================================
+wrongGuesses :: Puzzle -> Int
+wrongGuesses (Puzzle _ [Nothing,Just 'i'] "iao") =
+  length $ "iao" \\ catMaybes [Nothing,Just 'i']
+----

@@ -1,0 +1,43 @@
+= How pack and encode evaluates
+
+[source,Haskell]
+----
+-- pack
+pack :: Eq a => [a] -> [[a]]
+pack [] = []
+pack (x:xs) = let (first,rest) = span (==x) xs in (x:first) : pack rest
+
+-- evaluation steps
+pack ('h':'o':'l':'a') = let ("",'o' : 'l' : 'a':[]) = span (=='h') 'o':'l':'a':[] in ('h':"") : 'o' : 'l' : 'a': []
+pack ('o':'l':'a':[]) = let ("",'o' : 'l' : 'a':[]) = span (=='o') 'l':'a':[] in ('o':"") : 'l' : 'a': []
+pack ('l':'a':[]) = let ("",'l' : 'a':[]) = span (=='l') :'a':[] in ('l':"") : 'a': []
+pack ('a':[]) = let ("", 'a':[]) = span (=='a') 'a':[] in ('a':"") : []
+----
+
+[source,Haskell]
+----
+-- encode
+encode :: Eq a => [a] -> [(Int, a)]
+encode xs = map (\x-> (length x,head x)) $ group xs
+
+-- evaluation
+group "aanagraam" -> ["aa","n","a","g","r","aa","m"]
+           map f  -> [(2,'a'),(1,'n'),(1,'g'),(1,'r'),(2,'a'),(1,'m')]
+
+----
+
+[source,Haskell]
+----
+--pack encode
+packEncode :: Eq a => [a] -> [(Int,a)]
+packEncode xs = enc . pack $ xs
+    where enc = foldr (\x acc -> (length x, head x) : acc) []
+
+-- evaluation steps
+ls = ["hola","ola","la","a"]
+foldr (\x acc -> (length x, head x) : acc) [] ["hola","ola","la","a"]
+        ^ ^                                ^     ^
+        a b                                b    t a
+
+xs =((4,'h') : ((3,'o') : ((2,'l') : (1,'a') : [])))
+----

@@ -1,0 +1,13 @@
+= I like Cars...and planes too
+
+== Exercise: Vehicle Types.
+
+1. What is the Type of `myCar`
+     - `myCar :: Vehicle`
+2. Given the following, define the functions:
+
+[source,Haskell]
+----
+isCar :: Vehicle -> Bool
+isCar = undefined
+----

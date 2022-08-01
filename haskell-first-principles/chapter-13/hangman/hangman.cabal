@@ -1,0 +1,41 @@
+cabal-version:       >=1.10
+name:                hangman
+version:             0.1.0.0
+build-type:          Simple
+author:              Jack O'Brien
+maintainer:          jack@yumi.ai
+category:            Game
+extra-source-files:  data/dict.txt
+
+executable hangman
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >=4.7 && <5
+                     , hangman
+                     , QuickCheck
+                     , hspec
+                     , random
+                     , split
+library
+  hs-source-dirs:      src
+  exposed-modules:     Hangman
+  default-language:    Haskell2010
+  build-depends:       base >=4.7 && <5
+                     , random
+                     , split
+                     , QuickCheck
+                     , hspec
+
+test-suite tests
+  ghc-options: -Wall -fno-warn-orpahns
+  type: exitcode-stdio-1.0 
+  main-is: tests.hs
+  hs-source-dirs: test
+  build-depends:        base
+                      , hangman
+                      , random
+                      , split
+                      , QuickCheck
+                      , hspec
+  default-language:   Haskell2010

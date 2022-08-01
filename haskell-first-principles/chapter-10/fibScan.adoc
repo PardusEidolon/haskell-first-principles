@@ -1,0 +1,15 @@
+= Fibonacci Scan
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+fibs :: [Integer]
+fibs = 1 : scanl (+) 1 fibs
+
+fibs = 1 : 1 : scanl (+) 2 fibs
+fibs = 1 : 1 : 2 : scanl (+) 3 fibs
+fibs = 1 : 1 : 2 : 3: scanl (+) 5 fibs
+fibs = 1 : 1 : 2 : 3 : 5 :scanl (+) 8 fibs
+fibs = 1 : 1 : 2 : 3 : 5 : 8 : scanl (+) 13 fibs
+----

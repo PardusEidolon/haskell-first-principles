@@ -1,0 +1,52 @@
+name:                stockquotes
+version:             0.1.0.0
+license:             BSD3
+author:              "Jack OBrien"
+maintainer:          "jack@yumi.ai"
+copyright:           "2022 Jack OBrien"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+synopsis:            An application for processing stock quote data
+category:            Web
+
+dependencies:
+- base >= 4.7 && < 5
+- optparse-applicative
+- time
+- cassava
+- colonnade
+- blaze-colonnade
+- Chart
+- Chart-diagrams 
+- blaze-html
+- bytestring
+- fmt
+- text
+
+library:
+  source-dirs: src
+
+executables:
+  stockquotes:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - stockquotes
+
+tests:
+  stockquotes-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - stockquotes

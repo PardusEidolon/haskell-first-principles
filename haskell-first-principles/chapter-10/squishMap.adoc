@@ -1,0 +1,26 @@
+= SquishMap
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+
+-- foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+
+squishMap :: (a -> [b]) -> [a] -> [b]
+squishMap f ls= foldr ((++) . f ) [] ls
+
+squishMap (\x -> [1, x, 3]) [1,2,3] = foldr ((++) . (\x -> [1,3,3]) ) [] [1,2]
+                                      foldr ((++) . (\x -> [1,2,3]) ) [] [1]
+                                      foldr ((++) . (\x -> [1,1,3]) ) []
+                                      ([1,1,3] ++ ([1,2,3] ++ ([1,3,3] ++ [])))
+                                      [1,1,3,1,2,3,1,3,3]
+
+f x = "WO " ++ [x] ++ " OT "
+squishMap f "blah" = foldr ((++) . "WO " ++ ['h'] ++ " OT " ) [] "bla"
+                     foldr ((++) . "WO " ++ ['a'] ++ " OT " ) [] "bl"
+                     foldr ((++) . "WO " ++ ['l'] ++ " OT " ) [] "b"
+                     foldr ((++) . "WO " ++ ['b'] ++ " OT " ) []
+                    ("WO b OT "++ ("WO l OT " ++ ("WO a OT " ++ ("WO h OT " ++ []))))
+                    "WO b OT WO l OT WO a OT WO h OT "
+----

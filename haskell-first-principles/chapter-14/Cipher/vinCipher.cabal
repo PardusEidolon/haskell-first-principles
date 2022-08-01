@@ -1,0 +1,29 @@
+cabal-version:      2.4
+name:               Cipher 
+-- ^^^ the name of your local library
+version:            0.1.0.0
+author:             parduseidolon
+maintainer:         38515818+PardusEidolon@users.noreply.github.com
+extra-source-files: CHANGELOG.md
+
+library
+  exposed-modules:    VinCipher
+                    , CCipher
+  ghc-options:        -Wall -fwarn-tabs
+  build-depends:      base >=4.7 && <5
+                      , QuickCheck
+                      , hspec
+  hs-source-dirs:     src
+  default-language:   Haskell2010
+
+test-suite tests
+  ghc-options: -Wall -fno-warn-orpahns
+  type: exitcode-stdio-1.0 
+  main-is: CipherTests.hs
+  hs-source-dirs: test
+  build-depends:        base
+                      , QuickCheck
+                      , hspec
+                      , Cipher
+                      -- name of the local library exposed for testing is usually the name of the directory you intialised your files in.
+  default-language:   Haskell2010

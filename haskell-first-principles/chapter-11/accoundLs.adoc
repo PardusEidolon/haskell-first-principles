@@ -1,0 +1,12 @@
+= Sumbal' Evaluation of foldr
+
+[source,Haskell]
+----
+foldr :: (a -> b -> b) -> b -> [a] -> b
+show (foldr ((+) . (\ (Cheque _ _ _ a) -> a)) 0 acc)
+
+show (foldr ((+) . (\ (Cheque _ _ _ 10.0) -> 10.0)) 0 accLs)
+show (foldr ((+) . (\ (Cheque _ _ _ 500.0) -> 500.0)) 10.0 accLs)
+show (foldr ((+) . (\ (Cheque _ _ _ 120.0) -> 120.0)) 500.0 accLs)
+(120 + (500.0 + (10.0 + 0)))
+----

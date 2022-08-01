@@ -1,0 +1,33 @@
+cabal-version:      2.4
+name:               recap
+version:            0.1.0.0
+author:             parduseidolon
+maintainer:         38515818+PardusEidolon@users.noreply.github.com
+
+extra-source-files: CHANGELOG.md
+
+library
+  exposed-modules:     Hello
+                     , Main
+  ghc-options:        -Wall -fwarn-tabs
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  build-depends:       base ^>=4.14.3.0
+
+executable recap
+    main-is:          Main.hs
+    build-depends:    base ^>=4.14.3.0
+                    , recap
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+test-suite tests
+  ghc-options: -Wall -fno-warn-orpahns
+  type: exitcode-stdio-1.0 
+  main-is: tests.hs
+  hs-source-dirs: test
+  build-depends:        base
+                      , recap
+                      , QuickCheck
+                      , hspec
+  default-language:   Haskell2010

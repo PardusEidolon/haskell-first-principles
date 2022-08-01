@@ -1,0 +1,16 @@
+cabal-version:  1.12
+name:           exercises
+version:        0.1.0.0
+description:    exercises for haskell programming from first principles chapter 16
+author:         Jack O'Brien
+maintainer:     jack@yumi.ai
+copyright:      2022 Jack O'Brien
+build-type:     Simple
+
+
+library
+  build-depends:
+      base >=4.7 && <5,
+      QuickCheck,
+      hspec
+  default-language: Haskell2010

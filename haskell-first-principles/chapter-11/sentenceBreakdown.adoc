@@ -1,0 +1,110 @@
+= Sentence funtion breakdown
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,haskell]
+----
+capitalizeParagraph :: String -> String
+capitalizeParagraph = unwords . capitalize . words
+   where
+       capitalize [] = []
+       capitalize wws@(w:ws) = capitalizeWord w : capitalizeAfterPeriod wws
+       endsInPeriod [] = False
+       endsInPeriod w = last w == '.'
+       capitalizeAfterPeriod (wb:w:ws) =
+           if endsInPeriod wb
+               then capitalizeWord w : capitalizeAfterPeriod (w:ws)
+               else w : capitalizeAfterPeriod (w:ws)
+       capitalizeAfterPeriod _ = []
+----
+
+[NOTE]
+for reference later ⬆
+
+[source,haskell]
+----
+wordsV = ["welcome.","back","sir."]
+
+capitalize [] = []
+capitalize wordsV = capitalizeWord "welcome." : capitalizeAfterPeriod ["welcome.","back","sir."]
+endsInPeriod [] = False
+endsInPeriod "welcome." = last '.' == '.' -- > True
+capitalizeAfterPeriod ("welcome.":"back":"sir.") =
+        if endsInPeriod "welcome."
+            then capitalizeWord "back" : capitalizeAfterPeriod ("back":"sir.")
+            else "back" : capitalizeAfterPeriod ("back":"sir.")
+capitalizeAfterPeriod _ = []
+
+endsInPeriod "back" = last 'k' == '.' -- > False
+capitalizeAfterPeriod ("back":"sir." : []) =
+        if endsInPeriod "back"
+            then capitalizeWord "sir" : capitalizeAfterPeriod ("sir.":[]) -- this condition fails
+            else "Sir." : capitalizeAfterPeriod ("sir."[])
+
+capitalizeAfterPeriod ("sir." : []) = -- this jumps straight to our base case
+        if endsInPeriod "sir" 
+            then capitalizeWord "sir" : capitalizeAfterPeriod ("sir.":[]) -- this condition fails
+            else "Sir." : capitalizeAfterPeriod ("sir."[])
+capitalizeAfterPeriod _ = [] -- we can take  lists that are less than 3 so we come back here
+
+-- Our result should look like this before passing as an argument into unwords to turn is back in to a string rather than a [String]
+["Welcome.","Back","sir."]
+-- and we get 
+"Welcome. Back sir."
+----
+
+Another round for you :-)
+[source,haskell]
+----
+capitalizeParagraph :: String -> String
+capitalizeParagraph sen = intercalate " " . map f $ sens
+    where sens = splitSentences sen
+          f = unwords . (\(h:t) -> capitalizeWord h : t) . words
+
+splitSentences :: String -> [String]
+splitSentences [] = []
+splitSentences str =
+  case findIndex (== '.') str of
+    Just num -> let (fst, snd) = splitAt (num + 1) str
+                in fst : splitSentences (dropWhile (== ' ') snd)
+    Nothing -> [str]
+----
+
+[NOTE]
+Again for refernence only ⬆
+
+[source,haskell]
+----
+capitalizeParagraph :: String -> String
+capitalizeParagraph "welcome. back sir." = map f $ "welcome. back sir."
+    where sens = splitSentences "welcome. back sir."
+          f = unwords . (\(h:t) -> capitalizeWord "Welcome" : "Back" : "sir.") . ["welcome.","back","sir."]
+
+--- to which shold be now after the following steps below
+capitalizeParagraph :: String -> String
+capitalizeParagraph "welcome. back sir." = unwords . map f $ "welcome. back sir."
+    where sens = splitSentences "welcome. back sir."
+          f = unwords . (\(h:t) -> capitalizeWord "Welcome." : "back sir.") . ["welcome.","back sir."]
+
+-- our result now when f is mapped to each of the iobjects is now just: 
+> "Welcome. Back sir." 
+
+-- below is how our sentence is processed
+splitSentences :: String -> [String]
+splitSentences [] = []
+splitSentences "welcome. back sir." =
+  case findIndex (== '.') "welcome. back sir." of
+    Just 7 -> let (fst, snd) = splitAt (7 + 1) "welcome. back sir."
+              in "welcome." : splitSentences (dropWhile (== ' ') " back sir.") -- remove the prefix space before "back sir"
+    Nothing -> [str]
+
+splitSentences "back sir." =
+  case findIndex (== '.') "back sir." of
+    Just 8 -> let (fst, snd) = splitAt (8 + 1) "back sir."
+              in "back sir." : splitSentences (dropWhile (== ' ') "") -- remove the prefix space before "back sir"
+    Nothing -> [str]
+
+splitSentences "" =
+  case findIndex (== '.') "" of 
+    Nothing -> [""]
+----

@@ -1,0 +1,16 @@
+= A BinaryTree Fold
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source, Haskell]
+----
+testTree' :: BinaryTree Integer
+testTree' = Node (Node Leaf 3 Leaf) 1 (Node Leaf 4 Leaf)
+
+foldTree :: (a -> b -> b) -> b -> BinaryTree a -> b1
+foldTree _ v Leaf = v
+foldTree f v (Node lt a rt) = foldTree f (f a (foldTree f v lt)) rt
+foldTree (+) 0 (Node (Node Leaf 3 Leaf) 1 (Node Leaf 4 Leaf)) = foldTree (+) ((+) 1 (foldTree (+) 0 (Node Leaf 3 Leaf))) (Node Leaf 4 Leaf)
+
+foldTree (+) 0 (Node Leaf 3 Leaf) = foldTree (+) ((+) 3 (foldTree (+) 0 Leaf) Leaf  -- this hits our base case
+----

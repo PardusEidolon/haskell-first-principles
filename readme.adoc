@@ -1,0 +1,9 @@
+= Haskell Nix Programming Enviroment Sandbox
+:author: Jack O'Brien
+
+:url-nix: https://nixos.org/download.html
+:url-lorri: https://github.com/nix-community/lorri
+:url-direnv: https://direnv.net/
+
+
+This is intended to work with {url-nix}[Nix], {url-lorri}[Lorri] and {url-direnv}[Direnv]. I'm shifting from a windows work enviroment to a Unix based one now. So as far as I'm aware windows is now legacy to me for the work I intent to be doing in the future. A sandbox for everything Haskell. I will be putting files here for the remainder of my journey as I continue to work through the Haskell first principle book.

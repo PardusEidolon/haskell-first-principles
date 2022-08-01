@@ -1,0 +1,1 @@
+\(n : Bool) -> [n || True, n && False , n || True, True]

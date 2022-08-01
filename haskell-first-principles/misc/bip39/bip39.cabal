@@ -1,0 +1,42 @@
+cabal-version:      2.4
+name:               bip39
+version:            0.1.0.0
+author:             parduseidolon
+maintainer:         38515818+PardusEidolon@users.noreply.github.com
+
+extra-source-files: CHANGELOG.md
+                  , data/bip39_en.txt
+
+
+library
+  exposed-modules:     Bip39
+                     , Main
+  ghc-options:        -Wall -fwarn-tabs
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  build-depends:       base ^>=4.14.3.0
+                     , containers
+                     , ilist
+
+executable bip39
+  main-is:            Main.hs
+  ghc-options:        -Wall -fwarn-tabs
+  hs-source-dirs:     src
+  build-depends:      base ^>=4.14.3.0
+                      , containers
+                      , bip39
+                      , ilist
+  default-language:   Haskell2010
+
+test-suite tests
+  ghc-options: -Wall -fno-warn-orpahns
+  type: exitcode-stdio-1.0 
+  main-is: tests.hs
+  hs-source-dirs: test
+  build-depends:        base
+                      , bip39
+                      , containers
+                      , ilist
+                      , QuickCheck
+                      , hspec
+  default-language:   Haskell2010

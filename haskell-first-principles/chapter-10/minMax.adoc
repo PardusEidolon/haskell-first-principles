@@ -1,0 +1,31 @@
+= min-max
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+---
+myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+myMaximumBy f = head . foldr (\a b -> case b of 
+                            [] -> [a]
+                            (b:bs) -> if f a b == GT then [a] else [b]) 
+                            []
+---
+head . foldr (\a b -> case [1,2,3] of 
+                            [] -> []
+                            (3:[2,1]) -> if compare [] [3] == GT then [] else [3]) [] [1,2,3]
+                            (2:[1]) -> if compare [3] [2] == GT then [3] else [2]) [1,2]
+                            (1:[]) -> if compare [3] [1] == GT then [3] else [1) [1]
+                            ([3]) []
+----
+
+[source,Haskell]
+----
+myMaximumBy' :: (a -> a -> Ordering) -> [a] -> a
+myMaximumBy' f ls = foldl (\b a -> if f b a == GT then b else a) (head ls) ls
+
+myMaximumBy' compare [1,2,3] = foldl (\b a -> if compare 1 1 == GT then 1 else 1) 1 [2,3]
+                                     (\b a -> if compare 2 1 == GT then 2 else 1) [3]
+                                     (\b a -> if compare 3 2 == GT then 3 else 2) []                                  
+----

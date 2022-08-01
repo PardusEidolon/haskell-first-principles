@@ -1,0 +1,55 @@
+= Rewrite Fold
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+3.
+[source,Haskell]
+----
+elemFold :: (Foldable t, Eq a) => a -> t a -> Bool
+elemFold e ls = foldr (\a b -> b || a == e) False ls
+
+elemFold 1 [1,2,3] = foldr (\a b -> False || 3 == 1) False [1,2]
+elemFold 1 [1] = foldr (\a b -> False || 2 == 1) False [1]
+elemFold 1 [] = foldr (\a b -> False || 1 == 1) False []
+
+(1 == 1(2 == 1(3 == 1)))
+----
+
+
+4.
+[source, Haskell]
+----
+rvsFold :: [a] -> [a]
+rvsFold ls = foldl (\b a -> a : b) [] ls
+
+rvsFold "dog" = foldl (\b a -> a : b) [] "dog"
+                      (\b a -> 'd' : []) "og"
+                      (\b a -> 'o': 'd' : []) "g"
+                      (\b a -> 'g':'o': 'd' : []) ""
+                      "god"
+----
+
+5.
+[source, Haskell]
+----
+myMap :: (a -> b) -> [a] -> [b]
+myMap f ls = foldr (\a b -> f a : b) [] ls
+
+myMap (+1) [1,2,3] = foldr (\a b -> (+1) 3 : []) [] [1,2]
+                           (\a b -> (+1) 2 : 4 : []) [] [1]
+                           (\a b -> (+1) 1 : 3 : 4 : []) []
+                           [2,3,4]
+----
+
+6.
+[source, Haskell]
+----
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter f xs = foldr (\a b -> if f a then a : b else b) [] [1,2,2,4]
+                   (\a b -> if even 4 then 4 : [] else []) [] [1,2,2]
+                   (\a b -> if even 2 then 2 : 4 : [] else []) [] [1,2]
+                   (\a b -> if even 2 then 2 : 2 : 4 : [] else []) [] [1]
+                   (\a b -> if even 1 then 2 : 2 : 4 : [] else []) []
+                   2 : 2 : 4 : []
+                   [2,2,4]
+----

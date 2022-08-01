@@ -1,0 +1,63 @@
+= Exercises: Ch.5.8 Exercises
+:email: 1cooljack@gmail.com
+:description: chapter 5 exercises from haskell first principles
+:author: Jack O'Brien
+:source-highlighter: highlight.js
+:stem: asciimath
+:icons: font
+
+[sidebar]
+.Knowing is not enough
+****
+[.text-center]
+Welcome to another round of “Knowing is not enough; we must
+apply.”
+****
+
+=== Multiple Choice
+1. A calue of the type [a] is?
+    * [x] c)
+2. A function of type [[a]] -> [a] could?
+    * [x] a)
+3. A function of type [a] -> Int -> a?
+    * [x] b)
+4. A function of type (a,b) -> a?
+    * [x] c)
+
+=== Determine the type
+For the following functions, determine the type of the specified value.
+We suggest you type them into a file and load the contents of the file
+in GHCi. In all likelihood, it initially will not have the polymorphic
+types you might expect due to the monomorphism restriction. That
+means that top-level declarations by default will have a concrete type
+if any can be determined.
+
+See results in the haskell file determinetype.hs
+
+=== Type cariable or specific type constructor
+You will be shown a type declaration, and you should categorize
+each type. The choices are a fully polymorphic type variable,
+constrained polymorphic type variable, or concrete type constructor.
+
+[source,Haskell]
+---
+f :: zed -> Zed -> Blah
+     [1]    [2]    [3]
+* All types are concrete
+---
+f :: Enum b => a -> b -> C
+      [1]     [2]  [3]  [4]
+* both 1,2,3 are fully polymorphic whilist C is concrete
+---
+f :: f -> g -> C
+    [1]  [2]  [3]
+* both 1 and 2 are polymorphic while C remains concrete.
+---
+
+=== Write a type signature
+For the following expressions, please add a type signature. You
+should be able to rely on GHCi type inference to check your work,
+although you might not have precisely the same answer as GHCi
+gives (due to polymorphism, etc).
+
+please refer to the haskell file newtypes.hs

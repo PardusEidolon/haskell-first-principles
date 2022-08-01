@@ -1,0 +1,13 @@
+= Be Kind
+
+
+== Exercises
+
+1. What is the kind of a -> a?
+    - a :: * -> *
+2. What is the kind of a -> b a -> T (b a)
+    - b :: * -> *
+    - T :: * -> *
+
+3. What is the kind of c a b -> c b a
+    - c :: * -> * -> *

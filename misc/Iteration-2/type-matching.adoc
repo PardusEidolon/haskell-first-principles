@@ -1,0 +1,41 @@
+= Exercises: Types
+:email: 1cooljack@gmail.com
+:author: Jack O'Brien
+:stem: asciimath
+:icons: font
+
+.Type Matching
+****
+Below you’ll find a list of several standard functions we’ve talked
+about previously. Under that is a list of their type signatures. Match
+the function to its type signature. Try to do it without peeking at the
+type signatures (either in the text or in GHCi) and then check your
+work. You may find it easier to start from the types and work out
+what you think a function of that type would do.
+****
+
+.Functions & Types Signatures
+1. a -> c
+2. b -> d
+3. c -> b
+4. d -> a
+5. e -> e
+
+.Answers
+1. ✔ Bool -> Bool
+2. ✔ [a] -> Int
+3. ✔ Foldable t => t [a] -> [a] -> _'Foldable' is just a list for this example_
+4. ✔ [a] -> a
+5. ✔ Ord a => a -> a -> Bool
+
+.Some Anonymous Lambda functions
+****
+We’ll use anonymous lambda here to show some examples
+of uncurrying.
+
+[stem]
+++++
+(lambdai.i)(lambdab.b) 
+++++
+
+****

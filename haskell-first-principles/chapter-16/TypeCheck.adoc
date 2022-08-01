@@ -1,0 +1,25 @@
+= But will it type check?
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+(.) :: (b -> c) -> (a -> b) -> a -> c
+
+fmap ::Functor f => (m -> n) -> f m -> f n
+fmap ::Functor g => (x -> y) -> g x -> g y
+----
+
+== Type Answers
+
+- `fmap . fmap`
+    * (Functor f, Functor g) => (x -> y) -> f (g x) -> f (g y)
+    * (a -> b) -> [Maybe a] -> [Maybe b]
+
+- fmap . fmap . fmap
+    * (Functor f1, Functor f2, Functor f3) => (a -> b) -> (f1 (f2(f3 a))) -> (f1 (f2(f3 b)))
+    * (String -> Char) -> (List (Maybe String)) -> (List (Maybe String)
+
+- `(+1) . negate`
+    * (Int -> Int) -> (Int -> Int) -> Int -> Int
+    * (Function IntB -> IntC) . (Function IntA -> IntB ) IntA -> IntC

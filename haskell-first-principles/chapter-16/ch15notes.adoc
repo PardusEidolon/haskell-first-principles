@@ -1,0 +1,34 @@
+= Chapter 15 Notes
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,haskell]
+----
+module WhatInTheFunc where
+
+data HelpMeh a = Nope | Pls a deriving (Eq,Show)
+
+instance Functor HelpMeh where
+    fmap _ Nope = Nope
+    fmap f (Pls a) = Pls (f a)
+
+-- this is different to...
+instance Functor (HelpMeh a) where <1>
+    fmap _ Nope = Nope
+    fmap f (Pls a) = Pls (f a)
+
+----
+<1> The type itself hasn't changed, however the argument is now part of the f structure. The compiler will think it kas the kind of * rather than * -> *; meaning it is no longer a _higher kinded type_
+
+1. [Maybe [Char]] -> [Char] = fmap
+2. [Maybe [Char]] -> [Maybe Char] = fmap . fmap
+3. [Maybe [Char]] -> [Maybe [Char]] = fmaps . fmap . fmap
+
+There are three structures to preserve depending how much you stack your functors
+(Note I will be using tilde ~ to represent short hand for `equivilent too`)
+
+1. Is only one structure to preserve that is (List (Char)) ~ [Char]
+2. Is two structure to preserve that being list (Maybe Char) ~ [Maybe Char]
+3. We now have three structures to preserve that being List (Maybe List (Char)) ~ [Maybe [Char]]
+
+the more functors the stack the further into the strucutre it applies, you can only apply as much as there is a structure to apply it too.

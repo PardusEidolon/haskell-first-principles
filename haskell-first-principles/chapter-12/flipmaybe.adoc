@@ -1,0 +1,22 @@
+= FlipMaybe
+:source-highlighter: highlight.js
+:highlightjs-theme: atom-one-dark
+
+[source,Haskell]
+----
+flipMaybe :: [Maybe a] -> Maybe [a]
+flipMaybe a = foldr f (Just []) a 
+    where f Nothing _ = Nothing 
+          f _ Nothing = Nothing
+          f (Just a) (Just as) = Just (a:as)
+----
+
+[source,Haskell]
+----
+flipMaybe [Just 1,Just 2,Just 3] = foldr f (Just []) [Just 1,Just 2,Just 3]
+    where f Nothing _ = Nothing 
+          f _ Nothing = Nothing
+          f (Just 3) (Just []) = Just (3:[])
+          f (Just 1) (Just 2) = Just (1:2:3:[])
+          Just [1,2,3]
+----

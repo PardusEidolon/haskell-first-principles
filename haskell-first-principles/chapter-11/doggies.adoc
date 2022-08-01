@@ -1,0 +1,22 @@
+= I like Doggies
+
+== Exercise: Dog Types
+
+1. Is Doggies a type constructor or a data constructor?
+    - A data constructor
+2. What is the kind of Doggies?
+    - * -> *
+3. What is the kind of Doggies String?
+    - *
+4. What is the type of Husky 10?
+     - Doggies Int
+5. What is the type of Husky (10 :: Integer)?
+    - Doggies :: Integer
+6. What is the type of Mastiff "Scooby Doo"?
+    - Doggies [Char]
+7. Is DogueDeBordeaux a type constructor or a data constructor?
+    - Data constructor & Type constructors
+8. What is the type of DogueDeBordeaux?
+    - DogueDeBordeaux a
+9. What is the type of DogueDeBordeaux "doggie!"
+    - DogueDeBordeaux [Char]

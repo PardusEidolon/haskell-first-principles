@@ -1,0 +1,32 @@
+cabal-version:      2.4
+name:               applicprops
+version:            0.1.0.0
+author:             parduseidolon
+maintainer:         38515818+PardusEidolon@users.noreply.github.com
+extra-source-files: CHANGELOG.md
+
+library
+  exposed-modules:    BadMonoid
+                    , Apl1
+                    , Exrcises
+                    , FinalExr
+  ghc-options:        -Wall -fwarn-tabs
+  build-depends:      base >=4.7 && <5
+                    , QuickCheck
+                    , checkers
+                    , validation
+  hs-source-dirs:     src
+  default-language:   Haskell2010
+
+
+test-suite testy
+  ghc-options:          -Wall -fno-warn-orpahns
+  type:                 exitcode-stdio-1.0 
+  main-is:              spec.hs
+  hs-source-dirs:       test
+  build-depends:        base
+                      , QuickCheck
+                      , checkers
+                      , validation
+                      , applicprops
+  default-language:   Haskell2010
