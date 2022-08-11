@@ -37,15 +37,16 @@ data QuoteData = QuoteData {
 instance FromField Day where
     parseField = parseTimeM True defaultTimeLocale "%Y-%m-%d" . unpack --regular normal date format YYYY-MM-DD
 
--- | Unwrap data type for out number fields, Take note that when parsing the @Volume@ field it's converted to a type of a double because of the integral converstion
+
+data QField = Open | Close | High | Low | Volume deriving (Eq,Show,Enum,Ord,Bounded)
+
+-- | Unwrap the QuoteData type for our number fields in the CSV, Take note that when parsing the @Volume@ field it's converted to a type of a double because of the integral converstion
 -- we get a type of:
 -- 
 -- >>> field2fun Volume = fromIntegral . volume :: Double
 -- 
 -- fromIntegral is taking our Integer and generalising it to be an ad hoc polymophic type constrained by the @Num@ class and because of our defined output for the function
 -- The compiler is able to interpret and spit out a @Double@
-
-data QField = Open | Close | High | Low | Volume deriving (Eq,Show,Enum,Ord,Bounded)
 
 field2fun :: QField -> QuoteData -> Double
 field2fun Open = open
@@ -54,7 +55,7 @@ field2fun High = high
 field2fun Low = low
 field2fun Volume = fromIntegral . volume
 
--- | Example Values
+-- | Example Quote data Value
 
 exampleQuote :: QuoteData
 exampleQuote = QuoteData (fromGregorian 2022 07 25) (120234) (12.83) (13.48) (13.49) (12.82)
