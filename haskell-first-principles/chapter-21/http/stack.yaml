@@ -1,7 +1,10 @@
 resolver: lts-18.28
 # Install the ghc with other libraries. You can use the 'nix.shell' aslo make sure to put in the lines 'ghcWithPackages (pkgs: [pkgs.mtl]) after the ${compiler}'
 # in the 'ghc' variable
-packages:
+packages: 
   - .
 
-  
+nix:
+  enable: true
+  pure: false
+  packages: [ zlib pkgconfig zeromq ]

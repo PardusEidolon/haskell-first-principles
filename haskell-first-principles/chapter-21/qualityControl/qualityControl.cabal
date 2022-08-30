@@ -1,0 +1,39 @@
+name:                qualityControl
+version:             0.1.0.0
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_qualityControl
+  hs-source-dirs:
+      src
+  build-depends:
+      QuickCheck
+    , base
+    , checkers
+  default-language: Haskell2010
+
+test-suite qualityControl-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , qualityControl
+                     , QuickCheck
+                     , checkers
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+                       -Wcompat
+                       -Widentities
+                       -Wincomplete-record-updates
+                       -Wincomplete-uni-patterns
+                       -Wmissing-export-lists
+                       -Wmissing-home-modules
+                       -Wpartial-fields
+                       -Wredundant-constraints
+                       -threaded
+                       -rtsopts
+                       -with-rtsopts=-N
