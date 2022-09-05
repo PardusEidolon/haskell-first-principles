@@ -33,6 +33,10 @@ pipelineFn' query = do
     a <- fetchFn query
     traverse mkIoOnlyObj $ mapM decodeFn a
 
+-- a -> [String] from IO [String]
+-- mapM decodeFn [String] -> Either Err [SomeObj]
+-- traverse mkIoOnlyObj (Right [SomeObj]) -> IO (Either Err [(SomeObj, SomeObj)]
+
 pipelineM :: Query -> IO (Either Err [(SomeObj, IoOnlyObj)]) 
 pipelineM = (traverse mkIoOnlyObj . traverse decodeFn ) <=< fetchFn -- IO [String] -> [String]
              -- a1 ^                 -- a2 ^
