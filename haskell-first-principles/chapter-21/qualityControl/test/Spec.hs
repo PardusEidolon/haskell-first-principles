@@ -232,6 +232,10 @@ data S n a = S (n a) a deriving (Eq, Show)
 instance Functor n => Functor (S n) where
   fmap f (S fa a) = S (f <$> fa) (f a)
 
+instance Applicative n => Applicative (S n) where
+  pure x = S (pure x) x
+  (S fa a) <*> (S as a') = S (fa <*> as) (a a')
+
 instance Foldable n => Foldable (S n) where
   foldMap f (S fa a) = foldMap f fa <> f a
 

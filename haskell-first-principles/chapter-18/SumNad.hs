@@ -14,5 +14,5 @@ instance Applicative (Sum a) where
 
 instance Monad (Sum a) where
     return = pure
-    (Second a) >>= f = f a
+    (Second a) >>= f = f a -- (-> f b)
     (First b) >>= _ = First b
