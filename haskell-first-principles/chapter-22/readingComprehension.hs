@@ -18,6 +18,7 @@ instance Monad (Reader ra) where
     (Reader rab) >>= ram = Reader $ \r -> runReader (ram (rab r)) r
 -- (r -> a) -> (a -> r -> b) -> (r -> b)
 --  Reader words >>= return = Reader $ \r -> runReader (return (words r)) r 
+
 myLiftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 myLiftA2 f fa fb = f <$> fa <*> fb
 
@@ -29,9 +30,9 @@ myLiftA2' f fa fb = do
 
 -- (a -> b -> c) -> (f -> a) -> (f -> b) -> (f -> c)
 
--- an example with numbers and addition
+-- An example with numbers and addition
 -- because the sum operator (+) is right associative...
--- applicative  aw was applying both functions to the one argument as arguments to the (+) function
+-- applicative aw was applying both functions to the one argument as arguments to the (+) function
 -- functions of functions let the compiler read the composition to reduce the ammount of parameter overhead
 -- (3*2) + (3+10)
 -- this is what applicaive also does with reader by the way
