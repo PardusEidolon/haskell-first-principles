@@ -2,3 +2,11 @@
 :author: Jack O'Brien
 
 My notes and solutions from the book Haskell Programming from First Principles.
+
+## Using Direnv
+
+make sure you use this in the root of the folder your working in, then run:
+[source, bash]
+----
+ehco use_nix >> .envrc && direnv allow
+----
